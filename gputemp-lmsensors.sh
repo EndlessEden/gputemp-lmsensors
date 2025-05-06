@@ -44,7 +44,7 @@ while : ; do
   	export gputemplm_shutdown=1
 	rm /tmp/gputemplm_shutdown
   fi
-  if [ "$gputemp_shutdownlm" -gt 0 ]; then
+  if [ "$gputemplm_shutdown" -gt 0 ]; then
       break
   fi
 done
@@ -69,7 +69,7 @@ elif ["$GPUT" == "amd" ]; then
 				export gputemplm_shutdown=1
 				rm /tmp/gputemplm_shutdown 
 			fi
-  			if [ "$gputemp_shutdownlm" -gt 0 ]; then
+  			if [ "$gputemplm_shutdown" -gt 0 ]; then
 				break
 			fi
 		done
