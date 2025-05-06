@@ -2,6 +2,7 @@
 Description=GPU temperature for fancontrol
 StartLimitInterval=200
 StartLimitBurst=5
+Before=fancontrol.service
 
 [Service]
 type=simple
