@@ -14,6 +14,11 @@ if [ ! "$(id -u)" -eq 0 ]; then
   echo "This script cannot be run as anyone but root right now."
   exit 1
 fi
+
+if [ "$1" == "stop" ]; then
+        touch /tmp/gputemplm_shutdown && exit 0
+fi
+
 echo "Checking GPU type..."
 if [ $(lspci -k -d ::03xx | grep 'Kernel driver in use' | sed 's|: |\n|g' | tail -1 | grep -c "nvidia") == "1" ]; then
         GPUT="nvidia"
@@ -48,7 +53,6 @@ elif ["$GPUT" == "amd" ]; then
 
 	if [ -e "/sys/class/drm/card0" ]; then
 		gpu_card_id=0
-		cat /sys/class/drm/card0/device/hwmon/hwmon*/temp1_input
 	elif [ -e "/sys/class/drm/card1" ]; then
 		gpu_card_id=1
 	else
@@ -96,4 +100,8 @@ else
 fi
 if [ -e /tmp/gputemplm_shutdown ]; then
 	rm /tmp/gputemplm_shutdown
+fi
+
+if [ -e /tmp/gputemp1_input ]; then
+	rm /tmp/gputemp1_input
 fi

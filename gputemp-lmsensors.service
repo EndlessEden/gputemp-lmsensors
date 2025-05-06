@@ -1,0 +1,15 @@
+[Unit]
+Description=GPU temperature for fancontrol
+StartLimitInterval=200
+StartLimitBurst=5
+
+[Service]
+type=simple
+ExecStart=/usr/bin/gputemp-lmsensors.sh
+ExecStop=/usr/bin/gputemp-lmsensors.sh stop
+KillMode=process
+Restart=on-failure
+RestartSec=2s
+
+[Install]
+WantedBy=fancontrol.service
