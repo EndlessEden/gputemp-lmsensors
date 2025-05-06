@@ -5,7 +5,7 @@ StartLimitBurst=5
 Before=fancontrol.service
 
 [Service]
-type=simple
+Type=simple
 ExecStart=/usr/bin/gputemp-lmsensors.sh
 ExecStop=/usr/bin/gputemp-lmsensors.sh stop
 KillMode=process
