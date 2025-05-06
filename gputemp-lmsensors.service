@@ -7,8 +7,8 @@ Before=fancontrol.service
 [Service]
 Type=simple
 User=root
-ExecStart=/usr/bin/bash -c gputemp-lmsensors.sh
-ExecStop=/usr/bin/bash -c gputemp-lmsensors.sh stop
+ExecStart=/usr/bin/bash -c "/usr/bin/gputemp-lmsensors.sh"
+ExecStop=/usr/bin/bash -c "/usr/bin/gputemp-lmsensors.sh stop"
 KillMode=process
 Restart=on-failure
 RestartSec=2s

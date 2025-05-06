@@ -10,13 +10,15 @@
 ##
 ####
 
+time="0.8"
+
 if [ ! "$(id -u)" -eq 0 ]; then
   echo "This script cannot be run as anyone but root right now."
   exit 1
 fi
 
 if [ "$1" == "stop" ]; then
-        touch /tmp/gputemplm_shutdown && exit 0
+        touch /tmp/gputemplm_shutdown && sleep 3 && exit 0
 fi
 
 if [ -e /tmp/gputemp1_input ]; then
@@ -59,7 +61,7 @@ while : ; do
   if [ "$gputemplm_shutdown" -gt 0 ]; then
       break
   fi
-  sleep 1.1
+  sleep $time
 done
 
 elif ["$GPUT" == "amd" ]; then
@@ -85,7 +87,7 @@ elif ["$GPUT" == "amd" ]; then
   			if [ "$gputemplm_shutdown" -gt 0 ]; then
 				break
 			fi
-			sleep 1.1
+			sleep $time
 		done
 	
 	elif [ "$gpu_card_id" == "1" ]; then
@@ -100,7 +102,7 @@ elif ["$GPUT" == "amd" ]; then
                         if [ "$gputemplm_shutdown" -gt 0 ]; then
                                 break
                         fi
-			sleep 1.1
+			sleep $time
                 done
 
 	else
