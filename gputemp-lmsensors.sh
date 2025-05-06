@@ -19,13 +19,18 @@ if [ "$1" == "stop" ]; then
         touch /tmp/gputemplm_shutdown && exit 0
 fi
 
+if [ -e /tmp/gputemp1_input ]; then
+	echo "Check if already running and remove /tmp/gputemp1_input
+	exit 1
+fi
+
 echo "Checking GPU type..."
 if [ $(lspci -k -d ::03xx | grep 'Kernel driver in use' | sed 's|: |\n|g' | tail -1 | grep -c "nvidia") == "1" ]; then
         GPUT="nvidia"
-	echo "$(lspci -k -d ::03xx | grep VGA | sed -e "s|NVIDIA Corporation ..[0-9][0-9][0-9]|\n|g" | tail ) Detected"
+	echo "$(lspci -k -d ::03xx | grep VGA | sed -e "s|NVIDIA Corporation ..[0-9][0-9][0-9]|\n|g" | tail -1 ) Detected"
 elif [ $(lspci -k -d ::03xx | grep 'Kernel driver in use' | sed 's|: |\n|g' | tail -1 | grep -c "AMD") -gt "0" ]; then
        	GPUT="amd"
-	echo "$(lspci -k -d ::03xx | grep VGA | sed -e "s| VGA compatible controller:|\n|g" | tail -) detected" ## ill clean this up later. 
+	echo "$(lspci -k -d ::03xx | grep VGA | sed -e "s| VGA compatible controller:|\n|g" | tail -1) detected" ## ill clean this up later. 
 else
 	GPUT="other"
 	if [ -e /tmp/gputemplm_shutdown ]; then
