@@ -20,7 +20,7 @@ if [ "$1" == "stop" ]; then
 fi
 
 if [ -e /tmp/gputemp1_input ]; then
-	echo "Check if already running and remove /tmp/gputemp1_input
+	echo "Check if already running and remove /tmp/gputemp1_input"
 	exit 1
 fi
 
@@ -44,7 +44,15 @@ if [ "$GPUT" == "nvidia" ]; then
 
 gputemplm_shutdown=0
 while : ; do
-  echo "$(nvidia-smi -q -d TEMPERATURE | grep 'GPU Current Temp' | sed 's| |\n|g' | grep [0-9][0-9])"000 > /tmp/gputemp1_input
+  export NVTEMP=0
+  export NVTEMP="$(/usr/bin/nvidia-smi -q -d TEMPERATURE | grep 'GPU Current Temp' | sed 's/ /\n/g' | grep [0-9][0-9])"
+  export NVTEMP=$(echo "$NTEMP"000)
+  if [ ! "$NVTEMP" == 0000 ]; then
+  	echo $NVTEMP > /tmp/gputemp1_input
+  else
+	echo "nvidia-smi not reporting temp correctly!" 
+	echo "99900" > /tmp/gputemp1_input # Spin fans up to max speed, to prevent damage.
+  fi
   if [ -e /tmp/gputemplm_shutdown ]; then
   	export gputemplm_shutdown=1
 	rm /tmp/gputemplm_shutdown
