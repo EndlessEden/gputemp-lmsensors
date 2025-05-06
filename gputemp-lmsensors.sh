@@ -44,10 +44,9 @@ if [ "$GPUT" == "nvidia" ]; then
 
 gputemplm_shutdown=0
 while : ; do
-  export NVTEMP=0
-  export NVTEMP="$(/usr/bin/nvidia-smi -q -d TEMPERATURE | grep 'GPU Current Temp' | sed 's/ /\n/g' | grep [0-9][0-9])"
-  export NVTEMP=$(echo "$NTEMP"000)
-  if [ ! "$NVTEMP" == 0000 ]; then
+  NVTEMP=0
+  NVTEMP=$(echo "$(nvidia-smi -q -d TEMPERATURE | grep 'GPU Current Temp' | sed 's| |\n|g' | grep [0-9][0-9])"000)
+  if [ ! "$NVTEMP" == 0 ]; then
   	echo $NVTEMP > /tmp/gputemp1_input
   else
 	echo "nvidia-smi not reporting temp correctly!" 
@@ -60,6 +59,7 @@ while : ; do
   if [ "$gputemplm_shutdown" -gt 0 ]; then
       break
   fi
+  sleep 1.1
 done
 
 elif ["$GPUT" == "amd" ]; then
@@ -85,6 +85,7 @@ elif ["$GPUT" == "amd" ]; then
   			if [ "$gputemplm_shutdown" -gt 0 ]; then
 				break
 			fi
+			sleep 1.1
 		done
 	
 	elif [ "$gpu_card_id" == "1" ]; then
@@ -99,6 +100,7 @@ elif ["$GPUT" == "amd" ]; then
                         if [ "$gputemplm_shutdown" -gt 0 ]; then
                                 break
                         fi
+			sleep 1.1
                 done
 
 	else
